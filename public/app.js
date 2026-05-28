@@ -109,6 +109,9 @@ function renderCards() {
     const perf = r.posts
       ? `<div class="perf">${r.posts} tracked posts · reach <b>${fmt(r.reach)}</b> · eng-rate <b>${r.engagementRate ?? "—"}%</b>${r.topPost ? ` · top: ${esc(r.topPost.title)}` : ""}</div>`
       : "";
+    const link = r.submitToken
+      ? `<div class="cardlink"><button class="linkbtn" data-token="${esc(r.submitToken)}">Copy submit link</button><span class="linkmsg dim"></span></div>`
+      : "";
     return `<div class="card">
       <div class="top">
         <div><div class="nm">${off}${esc(r.name)}</div><div class="beat">${esc(r.beat || "—")}</div></div>
@@ -121,9 +124,22 @@ function renderCards() {
       </div>
       ${chips(r.byChannel)}
       ${perf}
+      ${link}
     </div>`;
   }).join("");
 }
+
+// Copy a reporter's personal self-serve submit link (resolved to an absolute URL
+// relative to wherever the dashboard is served — works locally and hosted).
+document.querySelector("#cards")?.addEventListener("click", (e) => {
+  const b = e.target.closest(".linkbtn"); if (!b) return;
+  const url = new URL("submit.html?t=" + encodeURIComponent(b.dataset.token), location.href).href;
+  const msg = b.parentElement.querySelector(".linkmsg");
+  const done = (t) => { if (msg) { msg.textContent = t; setTimeout(() => (msg.textContent = ""), 2500); } };
+  navigator.clipboard?.writeText(url).then(() => done("Copied — send it to them"), () => {
+    window.prompt("Copy this submit link for the reporter:", url);
+  });
+});
 
 function renderFeed() {
   const feed = REPORT.feed || [];
