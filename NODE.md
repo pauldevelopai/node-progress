@@ -23,14 +23,19 @@ A single accountability view for a newsroom manager: **who is publishing
 what, where, and how often**, and how that work performs.
 
 Reporters' multi-channel output (Facebook, the website, TikTok, WhatsApp
-channel) lands here three ways:
+channel) lands here several ways:
 
-1. **Logged by hand** — the manager records an item against a reporter.
-2. **Pasted daily report** — the manager pastes the WhatsApp/email message
-   a reporter sent at the end of the day; `host.ai` reads the prose and
-   turns it into structured entries, which the manager reviews and saves.
-3. *(future)* an inbound WhatsApp/email webhook POSTing to the same
-   `/api/daily-report` endpoint, so reporters' messages flow in directly.
+1. **Reporter self-submit link** — each reporter gets a personal link
+   (`submit.html?t=<token>`, no login) to a phone-friendly page where they
+   paste their day's work; `host.ai` parses it into entries against their
+   name. The token is `base64url("<newsroom_id>:<secret>")`; the submit
+   routes live OUTSIDE `/api` so the tracker-login gate doesn't bounce them.
+2. **Logged by hand** — the manager records an item against a reporter.
+3. **Pasted daily report** — the manager pastes the WhatsApp/email message
+   a reporter sent; `host.ai` turns the prose into structured entries to
+   review and save.
+4. *(future)* an inbound WhatsApp/email webhook POSTing to the same parser,
+   so reporters' messages flow in with zero clicks.
 
 The dashboard then shows each reporter's output this week by channel,
 against an optional daily target (on-track / behind), plus a team timeline,
@@ -73,10 +78,12 @@ POST /api/brief       AI accountability brief
 
 Write routes (mounted via mountRoutes / index.js):
 ```
-POST /api/reporters     add a reporter to the roster
-POST /api/entries       log one piece of output by hand
-POST /api/daily-report  AI-parse a free-text daily report → entries (save optional)
-POST /api/metrics       record a post's real-world performance (manual)
+POST /api/reporters     add a reporter to the roster (gated)
+POST /api/entries       log one piece of output by hand (gated)
+POST /api/daily-report  AI-parse a free-text daily report → entries (gated)
+POST /api/metrics       record a post's real-world performance (gated)
+GET  /submit/whoami     validate a reporter's submit link → their name (UNGATED, token)
+POST /submit/ingest     reporter self-submits their day → AI parse → entries (UNGATED, token)
 ```
 
 ## Trajectory
