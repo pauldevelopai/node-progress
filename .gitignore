@@ -1,0 +1,24 @@
+# Secrets — NEVER commit
+.env
+.env.local
+
+# Dependencies — re-installed by npm install
+node_modules/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+
+# Newsroom data — stays on THIS computer, never committed.
+# No one's data travels with the code: a fresh clone / fork / install starts
+# empty, and each install's reporters, entries and metrics live only in its own
+# data/ folder. (The .gitkeep files just preserve the empty folders.)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Claude Code local workspace
+.claude/
