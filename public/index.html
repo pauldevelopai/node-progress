@@ -161,6 +161,25 @@ a.lnk{color:var(--accent);text-decoration:none}a.lnk:hover{text-decoration:under
 .spin{display:inline-block;width:13px;height:13px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:8px}
 @keyframes sp{to{transform:rotate(360deg)}}
 
+/* period switcher */
+.periods{display:flex;gap:6px;flex-wrap:wrap;margin:22px 0 0}
+.period{font-size:13px;font-weight:600;background:var(--card);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:7px 15px;cursor:pointer;transition:.15s;box-shadow:var(--shadow)}
+.period:hover{color:var(--fg);border-color:#cbd5e1}
+.period.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* reporter drill-down */
+.cardexpand{margin-top:12px;font-size:12.5px;cursor:pointer;user-select:none}
+.cardexpand:hover{color:var(--accent)}
+.card .drill{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.drilltbl{font-size:13px}
+.drilltbl th{padding:6px 8px}.drilltbl td{padding:7px 8px}
+
+/* email intake */
+.copyrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.addr{font-family:var(--mono);font-size:13px;background:var(--accent-soft);color:var(--accent);border:1px solid #d7e3f2;border-radius:6px;padding:8px 11px;word-break:break-all}
+.notice{font-size:13.5px;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:14px 16px;line-height:1.6}
+.notice code{font-family:var(--mono);font-size:12.5px;color:var(--accent-2)}
+
 /* empty + foot */
 .empty-hint{margin:30px 0;padding:40px;border:1px dashed var(--line);border-radius:10px;text-align:center;color:var(--muted);background:var(--card)}
 .empty-hint h2{font-size:20px;color:var(--fg);margin-bottom:10px}
@@ -177,7 +196,7 @@ a.lnk{color:var(--accent);text-decoration:none}a.lnk:hover{text-decoration:under
       <h1 id="brand-h1"><span>Progress Tracker</span></h1>
     </div>
     <div class="mast-meta">
-      <span id="meta-line"><b id="m-reporters">—</b> reporters · <b id="m-week">—</b> items this week</span><br>
+      <span id="meta-line"><b id="m-reporters">—</b> reporters · <b id="m-week">—</b> <span id="m-week-lbl">items this week</span></span><br>
       <span id="meta-date" class="dim">—</span><br>
       <a href="#" class="key-link" id="open-setup" style="display:none">change api key</a>
     </div>
@@ -185,9 +204,10 @@ a.lnk{color:var(--accent);text-decoration:none}a.lnk:hover{text-decoration:under
 
   <div class="sub">
     One view of what every reporter is publishing across <b>Facebook</b>, the <b>website</b>,
-    <b>TikTok</b> and <b>WhatsApp</b> — log it by hand, or paste the message a reporter
-    sent at the end of the day and let AI turn it into entries. Track each person against
-    their target, and pair it with how those posts <b>actually performed</b>.
+    <b>TikTok</b> and <b>WhatsApp</b>. The simplest way: give each reporter their
+    <b>personal submit link</b> and they report their own day — AI turns it into entries.
+    (Or log it yourself.) See it by <b>day, week, month or year</b>, against each person’s
+    target, paired with how those posts <b>actually performed</b>.
   </div>
 
   <!-- API-key setup (laptop only; hidden when the server manages the key) -->
@@ -223,6 +243,7 @@ a.lnk{color:var(--accent);text-decoration:none}a.lnk:hover{text-decoration:under
 
   <!-- Dashboard -->
   <div id="dash" style="display:none">
+    <div class="periods" id="periods"></div>
     <div class="topline" id="topline"></div>
 
     <div class="actions">
@@ -230,6 +251,8 @@ a.lnk{color:var(--accent);text-decoration:none}a.lnk:hover{text-decoration:under
       <button class="act" data-panel="entry">Log output</button>
       <button class="act" data-panel="report">Paste daily report</button>
       <button class="act" data-panel="metric">Add performance</button>
+      <button class="act" data-panel="connectors">Connectors</button>
+      <button class="act" data-panel="inbound">Email intake</button>
     </div>
 
     <!-- Add reporter -->
@@ -294,7 +317,7 @@ a.lnk{color:var(--accent);text-decoration:none}a.lnk:hover{text-decoration:under
     <!-- Add performance -->
     <div class="panel" id="p-metric">
       <h3>Record how a post performed</h3>
-      <div class="hint">Real-world numbers for a published post, entered by hand for now. (Plugging in social-media logins to pull these automatically is the next step.)</div>
+      <div class="hint">Real-world numbers for a published post, entered by hand. To pull them automatically from a platform, set up a <b>Connector</b> instead.</div>
       <div class="form-grid">
         <div class="fld"><label>Reporter</label><select id="m-reporter"></select></div>
         <div class="fld"><label>Channel</label><select id="m-channel">
@@ -312,6 +335,24 @@ a.lnk{color:var(--accent);text-decoration:none}a.lnk:hover{text-decoration:under
         <button class="btn" id="m-save">Save numbers</button>
         <span class="form-msg" id="m-msg"></span>
       </div>
+    </div>
+
+    <!-- Performance connectors -->
+    <div class="panel" id="p-connectors">
+      <h3>Performance connectors</h3>
+      <div class="hint">Plug in a platform once and pull post performance automatically — no more typing numbers by hand.
+        Each connector matches a platform post to the entry a reporter logged (by its link), so a connector works best
+        when reporters include the post's link. Your access token stays on the server and is never shown again.</div>
+      <div id="connectors-body"><div class="dim">Loading connectors…</div></div>
+    </div>
+
+    <!-- Email intake -->
+    <div class="panel" id="p-inbound">
+      <h3>Reporters self-report by email</h3>
+      <div class="hint">Give your reporters one email address. When they email their day to it, the system matches the
+        sender to a reporter (by their email on the roster) and turns the message into entries automatically — the same
+        AI parse as “Paste daily report”, with zero clicks for you.</div>
+      <div id="inbound-body"><div class="dim">Loading…</div></div>
     </div>
 
     <div class="tabs">
@@ -344,9 +385,9 @@ a.lnk{color:var(--accent);text-decoration:none}a.lnk:hover{text-decoration:under
     </div>
 
     <div id="v-timeline" class="view">
-      <div class="sec-h">Last 14 days</div>
+      <div class="sec-h" id="timeline-sub">By day, last 14 days</div>
       <div class="sec-t">Output over time</div>
-      <div class="sec-d">Total items logged per day across the whole team.</div>
+      <div class="sec-d">Total items logged across the whole team. Scales to the period you’ve selected above.</div>
       <div id="timeline"></div>
     </div>
 
