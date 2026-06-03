@@ -18,10 +18,15 @@ let chosenProvider = "anthropic";
 function applyBrand(setup) {
   const product = setup.productName || "Progress Tracker";
   const nr = setup.newsroom;
-  const full = nr ? `${nr} ${product}` : product;
+  // Hosted scopes "newsroom" to the signed-in account, which is the user's EMAIL
+  // — don't blow that up in the 30px headline. Only a real newsroom NAME goes in
+  // the big heading; an email (or nothing) leaves the heading as just the product
+  // and the identity stays in the small kicker line.
+  const label = nr && !/@/.test(nr) ? nr : null;
+  const full = label ? `${label} ${product}` : product;
   document.title = full;
-  const k = $("#brand-kicker"); if (k) k.textContent = `${nr ? nr + " · " : ""}${product} Node${setup.serverManaged ? "" : " · running locally"}`;
-  const h = $("#brand-h1"); if (h) h.innerHTML = `${nr ? esc(nr) + " " : ""}<span>${esc(product)}</span>`;
+  const k = $("#brand-kicker"); if (k) k.textContent = `${label ? label + " · " : ""}${product} Node${setup.serverManaged ? "" : " · running locally"}`;
+  const h = $("#brand-h1"); if (h) h.innerHTML = `${label ? esc(label) + " " : ""}<span>${esc(product)}</span>`;
   const f = $("#brand-foot"); if (f) f.textContent = `${full} — a Node on GROUNDED`;
 }
 
