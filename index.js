@@ -23,7 +23,7 @@ import { dirname, join } from "node:path";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(readFileSync(join(__dirname, "package.json"), "utf8"));
 
-const SLUG = "progress-tracker";
+const SLUG = "progress";
 const PRODUCT = "Progress Tracker";
 
 const host = createLiteHost({

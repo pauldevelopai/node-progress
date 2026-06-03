@@ -29,7 +29,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(readFileSync(join(__dirname, "package.json"), "utf8"));
 
 await createHostedServer({
-  slug: "progress-tracker",
+  slug: "progress",
   productName: "Progress Tracker",
   handlers,
   ensureSchema,

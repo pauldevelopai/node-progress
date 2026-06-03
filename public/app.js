@@ -1,6 +1,6 @@
 // public/app.js — Progress Tracker dashboard.
 // Relative paths only (fetch("api/…"), assets without a leading slash) so it
-// works at / locally and under /nodes/progress-tracker/app/ when hosted.
+// works at / locally and under /nodes/progress/app/ when hosted.
 
 const $ = (s) => document.querySelector(s);
 const fmt = (n) => (n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1) + "k" : String(Math.round(n)));

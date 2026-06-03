@@ -17,12 +17,12 @@ password. Open your computer's built-in terminal and paste:
 
 **macOS** (open the **Terminal** app):
 ```bash
-curl -fsSL https://grounded.developai.co.za/nodes/progress-tracker/mac | bash
+curl -fsSL https://grounded.developai.co.za/nodes/progress/mac | bash
 ```
 
 **Windows** (open **PowerShell**):
 ```powershell
-irm https://grounded.developai.co.za/nodes/progress-tracker/windows | iex
+irm https://grounded.developai.co.za/nodes/progress/windows | iex
 ```
 
 It downloads the app, starts it, and opens the dashboard at

@@ -4,7 +4,7 @@
 #
 # A newsroom runs ONE line in the built-in Terminal app — nothing to install by hand:
 #
-#     curl -fsSL https://grounded.developai.co.za/nodes/progress-tracker/mac | bash
+#     curl -fsSL https://grounded.developai.co.za/nodes/progress/mac | bash
 #
 # What it does — no admin password, no Xcode tools, no Homebrew, no git, no VS Code:
 #   1. Uses the Node already on the Mac if it's new enough; otherwise downloads a
@@ -21,11 +21,11 @@
 set -euo pipefail
 
 # ── Settings (defaults are the real values; env vars override them for testing) ──
-REPO="${GROUNDED_REPO:-pauldevelopai/node-progress-tracker}"
+REPO="${GROUNDED_REPO:-pauldevelopai/node-progress}"
 REF="${GROUNDED_REF:-main}"
 NODE_VERSION="${GROUNDED_NODE_VERSION:-20.18.1}"
 GROUNDED_HOME="${GROUNDED_HOME:-$HOME/GROUNDED}"
-APP_DIR="$GROUNDED_HOME/node-progress-tracker"
+APP_DIR="$GROUNDED_HOME/node-progress"
 DISPLAY_NAME="Progress Tracker"
 PORT="${PORT:-3000}"
 

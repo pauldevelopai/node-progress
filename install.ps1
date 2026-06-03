@@ -2,7 +2,7 @@
 #
 # A newsroom runs ONE line in the built-in PowerShell — nothing to install by hand:
 #
-#     irm https://grounded.developai.co.za/nodes/progress-tracker/windows | iex
+#     irm https://grounded.developai.co.za/nodes/progress/windows | iex
 #
 # What it does — no admin rights, no installers to click through, no git, no VS Code:
 #   1. Uses the Node already on the PC if it's new enough; otherwise downloads a
@@ -19,11 +19,11 @@
 $ErrorActionPreference = 'Stop'
 
 # ── Settings (defaults are the real values; env vars override them for testing) ──
-$Repo    = if ($env:GROUNDED_REPO)         { $env:GROUNDED_REPO }         else { 'pauldevelopai/node-progress-tracker' }
+$Repo    = if ($env:GROUNDED_REPO)         { $env:GROUNDED_REPO }         else { 'pauldevelopai/node-progress' }
 $Ref     = if ($env:GROUNDED_REF)          { $env:GROUNDED_REF }          else { 'main' }
 $NodeVer = if ($env:GROUNDED_NODE_VERSION) { $env:GROUNDED_NODE_VERSION } else { '20.18.1' }
 $Root    = if ($env:GROUNDED_HOME)         { $env:GROUNDED_HOME }         else { Join-Path $env:USERPROFILE 'GROUNDED' }
-$AppDir  = Join-Path $Root 'node-progress-tracker'
+$AppDir  = Join-Path $Root 'node-progress'
 $Name    = 'Progress Tracker'
 $Port    = if ($env:PORT) { $env:PORT } else { '3000' }
 

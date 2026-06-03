@@ -8,12 +8,12 @@ this Node within it.
 
 | | |
 |---|---|
-| **Slug** | `progress-tracker` |
+| **Slug** | `progress` |
 | **Display name** | Progress Tracker |
 | **Current version** | 0.1.0 |
 | **Status** | build |
 | **Born** | 2026-05-28 |
-| **Repo** | `pauldevelopai/node-progress-tracker` (public) |
+| **Repo** | `pauldevelopai/node-progress` (public) |
 | **Storage pattern** | Postgres tables (`ensureSchema`) — relational reporters / entries / metrics |
 | **Runtime** | `@developai/grounded-node-runtime#v0.10.0` |
 

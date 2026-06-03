@@ -67,18 +67,18 @@ lite shapes are also valid pg.
 
 ## Gotchas
 
-- **Relative paths in `public/`** — hosted serves under `/nodes/progress-tracker/app/`.
+- **Relative paths in `public/`** — hosted serves under `/nodes/progress/app/`.
   An absolute `/api/…` or `/app.js` hits the tracker and 404s (the "only nav, no
   content" bug).
 - **Don't hand-write nav** — runtime v0.10.0 injects `/nodes/chrome.js`.
 - **Bump the runtime** — pinned by git tag in `package.json`; after a tag move,
-  on the box `rm -rf node_modules/@developai && npm install && pm2 restart progress-tracker-hosted`.
+  on the box `rm -rf node_modules/@developai && npm install && pm2 restart progress-hosted`.
 
 ## Deploy
 
 - Code change to this Node, on the box:
-  `cd /home/ubuntu/node-progress-tracker && git pull && rm -rf node_modules/@developai && npm install && pm2 restart progress-tracker-hosted`
-- First-time host: `cd /home/ubuntu/nodes && bash deploy-node.sh progress-tracker <port>`
+  `cd /home/ubuntu/node-progress && git pull && rm -rf node_modules/@developai && npm install && pm2 restart progress-hosted`
+- First-time host: `cd /home/ubuntu/nodes && bash deploy-node.sh progress <port>`
   then paste the Caddy block + `sudo systemctl restart caddy`.
 
 ## Performance connectors

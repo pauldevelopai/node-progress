@@ -8,13 +8,13 @@ publishes across **Facebook / website / TikTok / WhatsApp**, against their targe
 plus how those posts perform. No monthly analytics subscription; the newsroom owns it.
 
 ## Status: LIVE ✅
-- **Hosted:** https://grounded.developai.co.za/nodes/progress-tracker/app/ (behind the Grounded login)
-- pm2 process `progress-tracker-hosted` on **port 3005**; Caddy routes `/nodes/progress-tracker/app/*` → it.
+- **Hosted:** https://grounded.developai.co.za/nodes/progress/app/ (behind the Grounded login)
+- pm2 process `progress-hosted` on **port 3005**; Caddy routes `/nodes/progress/app/*` → it.
 - Front-door card live; install links (`/mac`, `/windows`) work.
-- Repo: `pauldevelopai/node-progress-tracker`. Runtime pinned `#v0.10.0`.
+- Repo: `pauldevelopai/node-progress`. Runtime pinned `#v0.10.0`.
 
 ## What's built (and shipped to `main` + the box)
-- **Data:** `node_progress_tracker_{reporters,entries,metrics}` (relational, `ensureSchema`).
+- **Data:** `node_progress_{reporters,entries,metrics}` (relational, `ensureSchema`).
   Reads are simple per-newsroom SELECTs; **all aggregation is in JS** (`lib/report.js`)
   so the same code runs on a laptop (lite JSON host) and online (Postgres).
 - **Dashboard** (`public/`): light theme matching Election Watch + the Grounded nav.
@@ -101,6 +101,6 @@ plus how those posts perform. No monthly analytics subscription; the newsroom ow
 
 ## Deploy mechanics (differ from nodes/HANDOVER.md)
 - `deploy-node.sh` is in **`/var/www/nodes`** (not `/home/ubuntu/nodes`).
-- Update this Node on the box: `cd /home/ubuntu/node-progress-tracker && git pull --ff-only && pm2 restart progress-tracker-hosted` (restart re-runs `ensureSchema` and reloads `index.html`/`submit.html`).
+- Update this Node on the box: `cd /home/ubuntu/node-progress && git pull --ff-only && pm2 restart progress-hosted` (restart re-runs `ensureSchema` and reloads `index.html`/`submit.html`).
 - Caddy file `/etc/caddy/sites/ailegal.co.za.caddy` uses explicit per-node `@matchers`
   (mirror the verifier block); validate with `sudo caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile`, then `sudo systemctl restart caddy` (admin off → restart, not reload).
