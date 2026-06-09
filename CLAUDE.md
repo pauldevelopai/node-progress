@@ -16,7 +16,7 @@ pulled automatically by a **performance connector** (Facebook Page Insights is t
 first; the framework is pluggable). The editor views everything by **Today / This
 week / This month / This year / All time**, with a per-reporter drill-down.
 
-Built on `@developai/grounded-node-runtime#v0.10.0`. Same handler code runs two
+Built on `@developai/grounded-node-runtime#v0.14.0`. Same handler code runs two
 ways:
 
 - **Local** — `index.js` → `createServer` + `createLiteHost`. Storage = JSON
@@ -70,7 +70,7 @@ lite shapes are also valid pg.
 - **Relative paths in `public/`** — hosted serves under `/nodes/progress/app/`.
   An absolute `/api/…` or `/app.js` hits the tracker and 404s (the "only nav, no
   content" bug).
-- **Don't hand-write nav** — runtime v0.10.0 injects `/nodes/chrome.js`.
+- **Don't hand-write nav** — the runtime injects `/nodes/chrome.js`.
 - **Bump the runtime** — pinned by git tag in `package.json`; after a tag move,
   on the box `rm -rf node_modules/@developai && npm install && pm2 restart progress-hosted`.
 

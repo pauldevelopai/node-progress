@@ -34,7 +34,16 @@ await createHostedServer({
   handlers,
   ensureSchema,
   // Write routes; hostFor(req) gives a per-request, newsroom-scoped host.
-  mountRoutes: (app, { hostFor }) => mountProgressRoutes(app, hostFor),
+  mountRoutes: (app, { hostFor }) => {
+    // MUST-HAVE: keep the chrome-injected app shell uncached, or browsers
+    // heuristically cache index.html and dashboard updates won't show until a
+    // hard refresh. Runs before the static/catch-all handlers; /api is untouched.
+    app.use((req, res, next) => {
+      if (req.method === "GET" && !req.path.startsWith("/api/")) res.set("Cache-Control", "no-cache");
+      next();
+    });
+    mountProgressRoutes(app, hostFor);
+  },
   nodeVersion: pkg.version,
   staticDir: join(__dirname, "public"),
 });
